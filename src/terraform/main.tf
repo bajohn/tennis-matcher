@@ -5,15 +5,36 @@ terraform {
       version = "~> 3.0"
     }
   }
+  backend "s3" {
+    bucket = "tennismatcher-tf-backend"
+    key    = "root"
+    region = "us-east-1"
+}
 }
 # TODO create AWS profile
 # Configure the AWS Provider
 provider "aws" {
   region = "us-east-1"
-  profile="blarb"
+  profile="tennismatcher"
 }
 
 # Create a Dynamo table
 # resource "aws_vpc" "example" {
 #   cidr_block = "10.0.0.0/16"
 # }
+
+resource "aws_dynamodb_table" "profile-table" {
+  name           = "tennismatcher-user-profile"
+  billing_mode   = "PROVISIONED"
+  read_capacity  = 1
+  write_capacity = 1
+  hash_key       = "UserName"
+
+  attribute {
+    name = "UserName"
+    type = "S"
+  }
+
+} 
+
+
