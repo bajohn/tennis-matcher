@@ -28,10 +28,10 @@ resource "aws_dynamodb_table" "profile-table" {
   billing_mode   = "PROVISIONED"
   read_capacity  = 1
   write_capacity = 1
-  hash_key       = "UserName"
+  hash_key       = "userName"
 
   attribute {
-    name = "UserName"
+    name = "userName"
     type = "S"
   }
 

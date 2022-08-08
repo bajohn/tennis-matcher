@@ -29,3 +29,10 @@ resource "aws_iam_role" "iam_for_tennismatcher_api_lambda" {
 }
 EOF
 }
+
+resource "aws_iam_policy_attachment" "tennismatcher-lambda-dynamo-attachment" {
+  name       = "tennismatcher-lambda-dynamo-attachment"
+  roles      = [aws_iam_role.iam_for_tennismatcher_api_lambda.name]
+  policy_arn = "arn:aws:iam::aws:policy/AmazonDynamoDBFullAccess"
+}
+
