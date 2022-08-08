@@ -1,5 +1,4 @@
-const AWS = require('aws-sdk');
-const { routeRequest } = require('./router');
+
 
 // Documentation:
 // https://docs.aws.amazon.com/sdk-for-javascript/v2/developer-guide/dynamodb-example-document-client.html
@@ -25,32 +24,12 @@ const { routeRequest } = require('./router');
 //     isBase64Encoded: false
 //   }
 
+const { routeRequest } = require("./router");
+
 exports.handler = async (event, context) => {
 
     console.log(event);
 
-    // const docClient = new AWS.DynamoDB.DocumentClient();
-    // const params = {
-    //     TableName: 'tennismatcher-user-profile',
-    //     Item: {
-    //         'userName': 'bjohn454@gmail.com',
-    //         'firstName': 'Brendan',
-    //         'lastName': 'John',
-    //         'city': 'Seattle',
-    //         'state': 'Washington'
-    //     }
-    // };
-
-    // docClient.put(params, (err, data) => {
-    //     if (err) {
-    //         console.log("Error", err);
-    //     } else {
-    //         console.log("Success", data);
-    //     }
-    // });
-
-
-    // const retData = await getter(docClient);
     const ret = await routeRequest(event)
 
     return {
@@ -59,24 +38,4 @@ exports.handler = async (event, context) => {
         "headers": {},
         "body": JSON.stringify(ret)
     };
-}
-
-const getter = (docClient) => {
-    return new Promise((res, rej) => {
-        var params = {
-            TableName: 'tennismatcher-user-profile',
-            Key: {
-                userName: 'bjohn454@gmail.com',
-            }
-        };
-
-        docClient.get(params, (err, data) => {
-            if (err) {
-                rej(error)
-            }
-            else {
-                res(data)
-            }
-        });
-    })
-}
+};

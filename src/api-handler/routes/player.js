@@ -1,19 +1,13 @@
+const AWS = require('aws-sdk');
 
-
-export const getPlayer = (event) => {
-    const userName = event.body.params.userName;
+const getPlayer = async (body) => {
+    const userName = body.params.userName;
     return await getter(userName);
 }
 
 
 
-export const putPlayer = async (event) => {
-    // "userName": "bjohn454@gmail.com",
-    // "city": "Seattle",
-    // "firstName": "Brendan",
-    // "lastName": "John",
-    // "state": "Washington"
-
+const putPlayer = async (body) => {
     const keys = ['userName',
         'firstName',
         'lastName',
@@ -22,14 +16,14 @@ export const putPlayer = async (event) => {
     ];
 
     const itemToPush = keys.reduce((lv, cv) => {
-        if (cv in event.body.params) {
-            lv[cv] = event.body.params[cv]
+        if (cv in body.params) {
+            lv[cv] = body.params[cv]
         }
         return lv;
     }, {});
 
     return await putter(itemToPush)
-    
+
 }
 
 const getter = async (userName) => {
@@ -60,11 +54,22 @@ const putter = async (itemToPush) => {
         Item: itemToPush
     };
 
-    docClient.put(params, (err, data) => {
-        if (err) {
-            console.log("Error", err);
-        } else {
-            console.log("Success", data);
-        }
+    return new Promise((res, rej) => {
+        docClient.put(params, (err, data) => {
+            if (err) {
+                console.log('Error', err)
+                res({
+                    statusCode: 500
+                });
+            }
+            else {
+                res({
+                    statusCode: 200,
+                    data
+                });
+            }
+        });
     });
 }
+
+module.exports = { getPlayer, putPlayer }

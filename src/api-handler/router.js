@@ -1,18 +1,21 @@
-const { getPlayer } = require("./routes/player");
+const { getPlayer, putPlayer } = require("./routes/player");
 
 
-export const routeRequest = (event) => {
-    const action = event.body.action;
+const routeRequest = async (event) => {
+    const body = JSON.parse(event.body);
+    const action = body.action;
     const routes = {
         getPlayer,
         putPlayer
     };
     if (action in routes) {
-        return routes[action](event)
+        return await routes[action](body)
     } else {
         return {
-            status: 'Not found'
+            statusCode: 404
         }
         // TODO: not found error
     }
 }
+
+module.exports = { routeRequest }
