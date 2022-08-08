@@ -28,8 +28,8 @@ EOF
 resource "aws_iam_policy_attachment" "tennismatcher-apigw-attachment" {
   name       = "tennismatcher-apigw-attachment"
   roles      = [aws_iam_role.iam_for_tennismatcher_apigw.name]
-  # policy_arn = "arn:aws:iam::aws:policy/service-role/AWSLambdaRole"
-  policy_arn = "arn:aws:iam::aws:policy/AWSLambda_FullAccess"
+  policy_arn = "arn:aws:iam::aws:policy/service-role/AWSLambdaRole"
+  #policy_arn = "arn:aws:iam::aws:policy/AWSLambda_FullAccess"
 }
 
 resource "aws_apigatewayv2_deployment" "tennismatcher-deployment" {
